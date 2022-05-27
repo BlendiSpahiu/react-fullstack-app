@@ -1,0 +1,19 @@
+subscription getPosts {
+  posts {
+    ...PostFields
+  }
+}
+
+subscription getPostByPk($id: Int!) {
+  post: posts_by_pk(id: $id) {
+    ...PostFields
+  }
+}
+
+subscription postsCount {
+  postsAggregate: posts_aggregate {
+    aggregate {
+      count
+    }
+  }
+}

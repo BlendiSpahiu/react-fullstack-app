@@ -1,0 +1,17 @@
+mutation insertPost($data: posts_insert_input!) {
+  insertPost: insert_posts_one(object: $data) {
+    id
+  }
+}
+
+mutation updatePost($id: Int!, $set: posts_set_input!) {
+  updatePost: update_posts_by_pk(pk_columns: { id: $id }, _set: $set) {
+    id
+  }
+}
+
+mutation deletePost($id: Int!) {
+  deletePost: delete_posts_by_pk(id: $id) {
+    id
+  }
+}

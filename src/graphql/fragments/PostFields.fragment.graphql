@@ -1,0 +1,12 @@
+fragment PostFields on posts {
+  id
+  title
+  content
+  created_at
+  published
+  author {
+    id
+    name
+    email
+  }
+}
