@@ -1,7 +1,12 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { AnnotationIcon } from '@heroicons/react/outline';
-import { PencilIcon, TrashIcon } from '@heroicons/react/solid';
-import { Button } from '@ornio-no/ds';
+import {
+  EyeIcon,
+  EyeOffIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/solid';
+import { Button, Ternary } from '@ornio-no/ds';
 import { ReactElement, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
@@ -35,8 +40,9 @@ export const Posts = (): ReactElement => {
         clearTimeout(timeout);
       };
     },
-    onError: () => console.log("Couln't be deleted"),
+    onError: () => console.log("Couldn't be deleted"),
   });
+
   const { data: { postsAggregate = null } = {} } = usePostsCountSubscription();
 
   // constants
@@ -65,21 +71,23 @@ export const Posts = (): ReactElement => {
         emptyStateDescription="Get started by creating a new post."
         icon={<AnnotationIcon className="w-12 h-12 text-gray-400" />}
       />
-      <ul className="grid grid-cols-1 gap-6 mt-10 sm:grid-cols-2 md:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 mt-10 sm:grid-cols-3">
         {posts.map((post) => (
           <li
             key={post.id}
-            className="flex flex-col col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow text-centeleftr"
+            className="flex flex-col col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow-lg text-centeleftr"
           >
             <div className="flex flex-col flex-1 p-6">
               <NavLink
                 to={`/post/${post.id}`}
-                className="text-sm font-medium text-gray-900"
+                className="text-lg font-semibold !leading-snug tracking-tight text-gray-900 "
               >
                 {post.title}
               </NavLink>
               <dl className="flex flex-col justify-between flex-grow mt-1">
-                <dd className="text-sm text-gray-500">{post.author?.name}</dd>
+                <dd className="mt-4 text-sm text-gray-500">
+                  {post.user?.name}
+                </dd>
                 <dd className="mt-3">
                   <NavLink
                     to={`/post/${post.id}`}
@@ -91,24 +99,56 @@ export const Posts = (): ReactElement => {
               </dl>
               <div className="flex items-center mt-4 space-x-4">
                 <Button
+                  color="none"
+                  link
                   onClick={handleSetModal(post.id)}
                   iconLeft={
                     <TrashIcon className="w-6 h-6 text-red-400 hover:text-red-600 hover:rounded-full" />
                   }
                 />
                 <Button
+                  color="none"
+                  link
                   onClick={handleEditPost(post.id)}
                   iconLeft={
-                    <PencilIcon className="w-6 h-6 text-gray-400 hover:text-gray-600 hover:rounded-full" />
+                    <PencilIcon className="w-6 h-6 text-gray-400 hover:text-gray-600 hover:rounded-full focus:outline-none" />
                   }
-                ></Button>
+                />
+                <Ternary
+                  condition={!post.published}
+                  fallback={
+                    <Button
+                      color="none"
+                      link
+                      onClick={handleEditPost(post.id)}
+                      iconLeft={
+                        <EyeIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
+                      }
+                    />
+                  }
+                >
+                  <Button
+                    color="none"
+                    link
+                    iconLeft={
+                      <EyeOffIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
+                    }
+                  />
+                </Ternary>
               </div>
             </div>
           </li>
         ))}
       </ul>
 
-      <Modal open={open} setOpen={setOpen} onClick={handleDeletePost} />
+      <Modal
+        title="Delete"
+        description="Are you sure you want to delete this post. This process cannot be undone"
+        buttonLabel="Delete"
+        open={open}
+        setOpen={setOpen}
+        onClick={handleDeletePost}
+      />
       <Notification
         show={showNotification}
         setShow={setShowNotification}

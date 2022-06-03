@@ -1,0 +1,5 @@
+subscription getUserByPk($userId: Int!) {
+  userByPk: users_by_pk(id: $userId) {
+    ...UserFields
+  }
+}

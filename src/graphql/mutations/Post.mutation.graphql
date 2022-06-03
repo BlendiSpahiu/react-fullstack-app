@@ -1,6 +1,6 @@
-mutation insertPost($data: posts_insert_input!) {
-  insertPost: insert_posts_one(object: $data) {
-    id
+mutation insertPost($object: posts_insert_input!) {
+  insertPost: insert_posts_one(object: $object) {
+    ...PostFields
   }
 }
 
@@ -12,6 +12,12 @@ mutation updatePost($id: Int!, $set: posts_set_input!) {
 
 mutation deletePost($id: Int!) {
   deletePost: delete_posts_by_pk(id: $id) {
+    id
+  }
+}
+
+mutation publishPost($postId: Int!, $set: posts_set_input!) {
+  updatePost: update_posts_by_pk(pk_columns: { id: $postId }, _set: $set) {
     id
   }
 }

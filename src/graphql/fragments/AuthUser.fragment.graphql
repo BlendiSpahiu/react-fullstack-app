@@ -1,0 +1,7 @@
+fragment AuthUserFields on users {
+  id
+  name
+  email
+  created_at
+  role
+}

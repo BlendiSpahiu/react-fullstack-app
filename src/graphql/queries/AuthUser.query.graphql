@@ -1,0 +1,5 @@
+query getAuthUser {
+  authUser: auth_user {
+    ...AuthUserFields
+  }
+}

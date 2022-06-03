@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "../.."
+        },
+        {
+            "path": "../../../react-fullstack-server"
+        },
+        {
+            "path": "../../../react-fullstack-hasura"
+        }
+    ]
+}

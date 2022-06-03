@@ -1,12 +1,14 @@
 import clsx from 'clsx';
+import { NavLink as Link } from 'react-router-dom';
 import { ReactElement } from 'react';
-import { NavLink as Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { NavLinkProps } from './NavLink.props';
 
 export const NavLink = ({
   to,
   children,
   className,
+  activeClassname,
 }: NavLinkProps): ReactElement => {
   // hooks
   const { pathname } = useLocation();
@@ -14,7 +16,7 @@ export const NavLink = ({
   return (
     <Link
       to={to}
-      className={clsx(to === pathname && 'bg-indigo-400 rounded-xl', className)}
+      className={clsx(to === pathname && activeClassname, className)}
     >
       {children}
     </Link>

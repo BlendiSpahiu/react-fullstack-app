@@ -2,8 +2,25 @@ import { Fragment, ReactElement } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
 import { ModalProps } from './Modal.props';
+import { Button, Ternary } from '@ornio-no/ds';
+import { EyeIcon } from '@heroicons/react/solid';
+import clsx from 'clsx';
 
-export const Modal = ({ open, setOpen, onClick }: ModalProps): ReactElement => {
+export const Modal = ({
+  open,
+  setOpen,
+  onClick,
+  title,
+  description,
+  buttonLabel,
+  publish,
+}: ModalProps): ReactElement => {
+  // handlers
+  const handleOnClick = () => {
+    setOpen(false);
+    onClick();
+  };
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog open={open} as="div" className="relative z-10" onClose={setOpen}>
@@ -32,39 +49,48 @@ export const Modal = ({ open, setOpen, onClick }: ModalProps): ReactElement => {
             >
               <Dialog.Panel className="relative px-4 pt-5 pb-4 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:max-w-sm sm:w-full sm:p-6">
                 <div>
-                  <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full">
-                    <ExclamationIcon
-                      className="w-6 h-6 text-red-600"
-                      aria-hidden="true"
-                    />
+                  <div
+                    className={clsx(
+                      'flex items-center justify-center w-12 h-12 mx-auto rounded-full',
+                      publish ? 'bg-gray-100' : 'bg-red-50'
+                    )}
+                  >
+                    <Ternary
+                      condition={!!publish}
+                      fallback={
+                        <ExclamationIcon
+                          className="w-6 h-6 text-red-600"
+                          aria-hidden="true"
+                        />
+                      }
+                    >
+                      <EyeIcon
+                        className="w-6 h-6 text-gray-600"
+                        aria-hidden="true"
+                      />
+                    </Ternary>
                   </div>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title
                       as="h3"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
-                      Delete Post
+                      {title}
                     </Dialog.Title>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Are you sure you want to delete your account? All of
-                        your data will be permanently removed from our servers
-                        forever. This action cannot be undone.
-                      </p>
+                      <p className="text-sm text-gray-500">{description}</p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-5 sm:mt-6">
-                  <button
+                  <Button
+                    className="w-full"
                     type="button"
-                    className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:text-sm"
-                    onClick={() => {
-                      setOpen(false);
-                      onClick();
-                    }}
+                    color={publish ? 'none' : 'danger'}
+                    onClick={handleOnClick}
                   >
-                    Delete Post
-                  </button>
+                    {buttonLabel}
+                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

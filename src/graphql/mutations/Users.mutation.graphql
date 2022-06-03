@@ -1,0 +1,5 @@
+mutation updatePersonalInfo($userId: Int!, $data: users_set_input!) {
+  updateUser: update_users_by_pk(pk_columns: { id: $userId }, _set: $data) {
+    id
+  }
+}

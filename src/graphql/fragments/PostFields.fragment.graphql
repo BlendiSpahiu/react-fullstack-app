@@ -1,11 +1,12 @@
 fragment PostFields on posts {
   id
   title
+  description
   content
   created_at
   published
-  author {
-    id
+  userId: user_id
+  user {
     name
     email
   }

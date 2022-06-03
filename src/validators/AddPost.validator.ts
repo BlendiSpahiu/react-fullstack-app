@@ -5,17 +5,8 @@ export const AddPostFormSchema = (): Joi.ObjectSchema =>
     title: Joi.string().trim().required().label('Title').messages({
       'string.empty': 'Title cannot be empty!',
     }),
+    description: Joi.string().trim().optional().label('Description').allow(''),
     content: Joi.string().trim().required().label('Content').messages({
       'string.empty': 'Content cannot be empty',
     }),
-    authorName: Joi.string().trim().required().label('Author Name').messages({
-      'string.empty': 'Author Name cannot be empty!',
-    }),
-    authorEmail: Joi.string()
-      .email({
-        tlds: { allow: false },
-      })
-      .trim()
-      .label('Author Email')
-      .allow(''),
   });

@@ -1,5 +1,5 @@
 import { FieldError, UseFormRegister } from 'react-hook-form';
-import { PostInputs } from '../../../interfaces/PostInputs';
+import { PostInputs } from '../../../interfaces/PostInputs.types';
 
 export interface AddPostFormFieldsProps {
   isEditing?: boolean;
@@ -7,7 +7,6 @@ export interface AddPostFormFieldsProps {
   errors: {
     title?: FieldError | undefined;
     content?: FieldError | undefined;
-    authorName?: FieldError | undefined;
-    authorEmail?: FieldError | undefined;
+    description?: FieldError | undefined;
   };
 }
