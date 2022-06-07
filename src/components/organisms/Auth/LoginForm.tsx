@@ -3,7 +3,7 @@ import { ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../../../graphql/gen/graphql';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth/useAuth';
 import { LoginFormInputs } from '../../../interfaces/LoginFormInputs.types';
 import { LoginFormSchema } from '../../../validators/Login.validator';
 

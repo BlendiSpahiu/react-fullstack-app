@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { MaingPageHeader } from '../molecules/MainPage/MaingPageHeader';
+import { MaingPageHeader } from '@molecules';
 
 export const Home = (): ReactElement => (
   <>

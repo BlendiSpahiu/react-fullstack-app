@@ -1,10 +1,12 @@
 import { Fragment, ReactElement } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { ExclamationIcon } from '@heroicons/react/outline';
-import { ModalProps } from './Modal.props';
+import { ModalProps } from '@molecules';
 import { Button, Ternary } from '@ornio-no/ds';
 import { EyeIcon } from '@heroicons/react/solid';
 import clsx from 'clsx';
+import { useParams } from 'react-router-dom';
+import { ModalTypesEnum } from '@enums';
 
 export const Modal = ({
   open,
@@ -15,15 +17,29 @@ export const Modal = ({
   buttonLabel,
   publish,
 }: ModalProps): ReactElement => {
+  // hooks
+  const { modal } = useParams();
+
   // handlers
   const handleOnClick = () => {
-    setOpen(false);
     onClick();
+    setOpen(false);
+    window.history.back();
+  };
+
+  const handleOnClose = () => {
+    setOpen(false);
+    modal !== ModalTypesEnum.DELETE && window.history.back();
   };
 
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog open={open} as="div" className="relative z-10" onClose={setOpen}>
+      <Dialog
+        open={open}
+        as="div"
+        className="relative z-10"
+        onClose={handleOnClose}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

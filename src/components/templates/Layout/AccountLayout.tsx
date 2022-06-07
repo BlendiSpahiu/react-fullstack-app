@@ -1,5 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import { Settings } from '../../organisms/AccountSettings/Settings';
+import { Settings } from '@organisms';
 
 export const AccountLayout = ({
   children,

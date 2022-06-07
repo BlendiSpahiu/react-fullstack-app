@@ -1,5 +1,5 @@
 export type JWTHasuraClaims = {
-  'x-hasura-allowed-roles': ['user'];
+  'x-hasura-allowed-roles': ['user', 'anonymous'];
   'x-hasura-default-role': 'user';
   'x-hasura-user-id': string;
   'x-hasura-role': 'user';

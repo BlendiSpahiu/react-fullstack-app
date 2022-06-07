@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import '@ornio-no/ds/style.css';
 import App from './App';
-import './initializers/dayjs';
+import './initializers/dayjs/dayjs';
 import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './graphql/client';

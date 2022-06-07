@@ -1,9 +1,13 @@
+import { FileUpload } from '@ornio-no/ds';
 import { ReactElement } from 'react';
+import { FileTypeEnum } from '../../../../enums/FileTypes/FileType.enum';
 import { AddPostFormFieldsProps } from '../Post.props';
 
 export const AddPostFormFields = ({
   register,
   errors,
+  onChange,
+  post,
 }: AddPostFormFieldsProps): ReactElement => (
   <div className="grid grid-cols-6 gap-6">
     <div className="col-span-6 sm:col-span-3">
@@ -40,6 +44,30 @@ export const AddPostFormFields = ({
       {errors.description && (
         <p className="text-red-500">{errors.description?.message}</p>
       )}
+    </div>
+
+    <div className="col-span-6 sm:col-span-4">
+      <label
+        htmlFor="postImage"
+        className="block text-sm font-medium text-gray-700"
+      >
+        Post Image
+      </label>
+      <FileUpload
+        id="postImage"
+        className="mt-1"
+        accept="image/png,image/gif,image/jpeg"
+        defaultPreview={{
+          name: 'default image',
+          src: post?.imageUrl ? post.imageUrl : '',
+          type: FileTypeEnum.image,
+        }}
+        helptext="PNG, JPG, GIF up to 10MB"
+        label="Upload a file or drag and drop"
+        onRemoveFile={function noRefCheck() {}}
+        onSelectFiles={function noRefCheck() {}}
+        onChange={onChange}
+      />
     </div>
 
     <div className="col-span-6 sm:col-span-4">

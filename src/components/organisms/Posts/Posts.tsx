@@ -1,23 +1,15 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { AnnotationIcon } from '@heroicons/react/outline';
-import {
-  EyeIcon,
-  EyeOffIcon,
-  PencilIcon,
-  TrashIcon,
-} from '@heroicons/react/solid';
-import { Button, Ternary } from '@ornio-no/ds';
 import { ReactElement, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   useDeletePostMutation,
   useGetPostsSubscription,
   usePostsCountSubscription,
-} from '../../../graphql/gen/graphql';
-import { Loader } from '../../atoms/Loader/Loader';
-import { Modal } from '../../molecules/Modal/Modal';
-import { Notification } from '../../molecules/Notification/Notification';
-import { PageHeader } from '../../molecules/PageHeader/PageHeader';
+} from '@graphql/gen/graphql';
+import { Loader } from '@atoms';
+import { Modal, PageHeader, Notification } from '@molecules';
+import { PostItem } from './PostItem';
 
 export const Posts = (): ReactElement => {
   // local state
@@ -53,6 +45,7 @@ export const Posts = (): ReactElement => {
   const handleSetModal = (id: number) => () => {
     setPostId(id);
     setOpen(!open);
+    navigate(`/posts/delete/${id}`);
   };
   const handleEditPost = (id: number) => () => navigate(`/edit/post/${id}`);
   const handleAddNewPost = () => navigate('/add-post');
@@ -73,71 +66,12 @@ export const Posts = (): ReactElement => {
       />
       <ul className="grid grid-cols-1 gap-6 mt-10 sm:grid-cols-3">
         {posts.map((post) => (
-          <li
+          <PostItem
             key={post.id}
-            className="flex flex-col col-span-1 bg-white divide-y divide-gray-200 rounded-lg shadow-lg text-centeleftr"
-          >
-            <div className="flex flex-col flex-1 p-6">
-              <NavLink
-                to={`/post/${post.id}`}
-                className="text-lg font-semibold !leading-snug tracking-tight text-gray-900 "
-              >
-                {post.title}
-              </NavLink>
-              <dl className="flex flex-col justify-between flex-grow mt-1">
-                <dd className="mt-4 text-sm text-gray-500">
-                  {post.user?.name}
-                </dd>
-                <dd className="mt-3">
-                  <NavLink
-                    to={`/post/${post.id}`}
-                    className="text-xs font-medium text-green-800 line-clamp-4 text-ellipsis"
-                  >
-                    {post.content}
-                  </NavLink>
-                </dd>
-              </dl>
-              <div className="flex items-center mt-4 space-x-4">
-                <Button
-                  color="none"
-                  link
-                  onClick={handleSetModal(post.id)}
-                  iconLeft={
-                    <TrashIcon className="w-6 h-6 text-red-400 hover:text-red-600 hover:rounded-full" />
-                  }
-                />
-                <Button
-                  color="none"
-                  link
-                  onClick={handleEditPost(post.id)}
-                  iconLeft={
-                    <PencilIcon className="w-6 h-6 text-gray-400 hover:text-gray-600 hover:rounded-full focus:outline-none" />
-                  }
-                />
-                <Ternary
-                  condition={!post.published}
-                  fallback={
-                    <Button
-                      color="none"
-                      link
-                      onClick={handleEditPost(post.id)}
-                      iconLeft={
-                        <EyeIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
-                      }
-                    />
-                  }
-                >
-                  <Button
-                    color="none"
-                    link
-                    iconLeft={
-                      <EyeOffIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
-                    }
-                  />
-                </Ternary>
-              </div>
-            </div>
-          </li>
+            post={post}
+            handleSetModal={handleSetModal}
+            handleEditPost={handleEditPost}
+          />
         ))}
       </ul>
 

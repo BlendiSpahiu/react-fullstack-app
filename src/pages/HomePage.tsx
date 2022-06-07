@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Home } from '../components/organisms/Home';
-import { AppLayout } from '../components/templates';
+import { Home } from '@organisms';
+import { AppLayout } from '@templates';
 
 export const HomePage = (): ReactElement => <AppLayout content={<Home />} />;

@@ -1,0 +1,19 @@
+// Tailwind
+@import './vendor/tailwindcss/index.css';
+
+// Base
+@import './base/reset';
+
+// Atoms
+@import '../components/atoms/index';
+
+// Molecules
+@import '../components/molecules/index';
+
+// Organisms
+@import '../components/organisms/index';
+
+// Templates
+
+// Pages
+@import '../pages/index';

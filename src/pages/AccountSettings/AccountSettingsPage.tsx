@@ -1,8 +1,7 @@
 import { ReactElement } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { AppLayout } from '../../components/templates';
-import { AccountLayout } from '../../components/templates/Layout/AccountLayout';
+import { AppLayout, AccountLayout } from '@templates';
 
 export const AccountsSettingsPage = (): ReactElement => (
   <AppLayout

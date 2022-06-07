@@ -1,17 +1,17 @@
 import { Button, FileUpload } from '@ornio-no/ds';
 import { Upload } from 'upload-js';
-import { FileTypeEnum } from '../../../enums/FileType.enum';
+import { FileTypeEnum } from '@enums';
 import { ReactElement, useEffect, useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '@hooks';
 import { useForm } from 'react-hook-form';
-import { PersonaInformationInputs } from '../../../interfaces/PersonalInformationInputs';
+import { PersonaInformationInputs } from '@interfaces';
 import {
   useGetUserByPkSubscription,
   useUpdatePersonalInfoMutation,
-} from '../../../graphql/gen/graphql';
-import { Loader } from '../../atoms/Loader/Loader';
-import { Notification } from '../../molecules/Notification/Notification';
-import { formatDate } from '../../../utils/dayjs/formatDate';
+} from '@graphql/gen/graphql';
+import { Loader } from '@atoms';
+import { Notification } from '@molecules';
+import { formatDate } from '@utils';
 
 export const PersonalInformation = (): ReactElement => {
   // local state
@@ -48,7 +48,7 @@ export const PersonalInformation = (): ReactElement => {
     reset,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<PersonaInformationInputs>({
     mode: 'onBlur',
   });
@@ -154,7 +154,6 @@ export const PersonalInformation = (): ReactElement => {
                   </div>
 
                   <FileUpload
-                    //   {...register('image')}
                     className="mt-10"
                     accept="image/png,image/gif,image/jpeg"
                     defaultPreview={{
@@ -174,8 +173,10 @@ export const PersonalInformation = (): ReactElement => {
               {/* Privacy section */}
               <div className="divide-y divide-gray-200">
                 <div className="flex justify-end px-4 py-4 mt-4 space-x-4 sm:px-6">
-                  <Button color="none">Cancel</Button>
-                  <Button loading={loading} type="submit">
+                  <Button type="button" color="none">
+                    Cancel
+                  </Button>
+                  <Button loading={loading} disabled={!isDirty} type="submit">
                     Save
                   </Button>
                 </div>

@@ -1,5 +1,6 @@
 import { Link } from '@ornio-no/ds';
 import { ReactElement } from 'react';
+
 export const MaingPageHeader = (): ReactElement => (
   <div className="mt-24 bg-white">
     <div className="px-4 py-16 mx-auto max-w-7xl sm:py-24 sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Post } from '../../components/organisms/Posts/Post';
-import { AppLayout } from '../../components/templates';
+import { Post } from '@organisms';
+import { AppLayout } from '@templates';
 
 export const PostPage = (): ReactElement => <AppLayout content={<Post />} />;

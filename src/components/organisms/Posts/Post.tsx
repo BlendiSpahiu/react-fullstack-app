@@ -1,8 +1,9 @@
 import { ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
-import { useGetPostByPkSubscription } from '../../../graphql/gen/graphql';
-import { replaceURLs } from '../../../utils/string/replaceURLs';
-import { Loader } from '../../atoms/Loader/Loader';
+import { useGetPostByPkSubscription } from '@graphql/gen/graphql';
+import { replaceURLs } from '@utils';
+import { Loader } from '@atoms';
+import { If } from '@ornio-no/ds';
 
 export const Post = (): ReactElement => {
   // hooks
@@ -30,6 +31,9 @@ export const Post = (): ReactElement => {
               {post?.title}
             </span>
           </h1>
+          <If condition={!!post?.imageUrl}>
+            <img src={post?.imageUrl || ''} alt="Post" className="my-4" />
+          </If>
           <p className="mt-8 text-xl leading-8 text-gray-500">
             {post?.description}
           </p>

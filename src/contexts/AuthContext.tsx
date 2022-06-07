@@ -11,17 +11,13 @@ import {
 import { client } from '../graphql/client';
 import { wsClient } from '../graphql/client/links/wsLink';
 import { useGetAuthUserLazyQuery } from '../graphql/gen/graphql';
-import {
-  AuthContextProps,
-  AuthUser,
-} from '../interfaces/AuthContextProps.types';
-import { Nullable } from '../interfaces/Nullable.types';
+import { AuthContextProps, AuthUser, Nullable } from '@interfaces';
 import {
   readAuthToken,
   removeAuthToken,
   validateAuthToken,
   writeAuthToken,
-} from '../utils/auth';
+} from '@utils';
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,

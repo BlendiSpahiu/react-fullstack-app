@@ -1,3 +1,4 @@
+import './styles/main.scss';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Password } from './components/organisms/AccountSettings/Password';
 import { PersonalInformation } from './components/organisms/AccountSettings/PersonalInformation';
@@ -19,7 +20,9 @@ export const App = () => (
     <Routes>
       <Route element={<AuthRoute />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/posts" element={<PostsPage />} />
+        <Route path="/posts" element={<PostsPage />}>
+          <Route path=":modal/:id" element={<PostsPage />} />
+        </Route>
         <Route path="/add-post" element={<AddPostPage />} />
         <Route path="/edit/post/*" element={<EditPostPage />}>
           <Route path=":id" element={<EditPostPage />} />

@@ -4,7 +4,7 @@ import { ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useRegisterMutation } from '../../../graphql/gen/graphql';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useAuth/useAuth';
 import { RegisterFormInputs } from '../../../interfaces/RegisterFormInputs.types';
 import { RegisterFormSchema } from '../../../validators/Register.validator';
 

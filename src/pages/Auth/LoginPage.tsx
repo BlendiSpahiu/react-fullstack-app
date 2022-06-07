@@ -1,4 +1,4 @@
 import { ReactElement } from 'react';
-import { LoginForm } from '../../components/organisms/Auth/LoginForm';
+import { LoginForm } from '@organisms';
 
 export const LoginPage = (): ReactElement => <LoginForm />;

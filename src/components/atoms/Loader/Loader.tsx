@@ -5,7 +5,7 @@ import { FC, ReactElement } from 'react';
 import clsx from 'clsx';
 
 // types
-import { LoaderProps } from './Loader.props';
+import { LoaderProps } from '@atoms';
 
 export const Loader: FC<LoaderProps> = ({
   loaderSize = 'base',

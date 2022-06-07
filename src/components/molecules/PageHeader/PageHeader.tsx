@@ -1,6 +1,6 @@
 import { PlusIcon } from '@heroicons/react/solid';
 import { ReactElement } from 'react';
-import { PageHeaderProps } from './PageHeader.props';
+import { PageHeaderProps } from '@molecules';
 
 export const PageHeader = ({
   count,

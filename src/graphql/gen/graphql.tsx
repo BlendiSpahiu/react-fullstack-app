@@ -275,6 +275,7 @@ export type Posts = {
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  image_url?: Maybe<Scalars['String']>;
   published: Scalars['Boolean'];
   title: Scalars['String'];
   updated_at: Scalars['timestamptz'];
@@ -357,6 +358,7 @@ export type Posts_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
+  image_url?: InputMaybe<String_Comparison_Exp>;
   published?: InputMaybe<Boolean_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -382,6 +384,7 @@ export type Posts_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
+  image_url?: InputMaybe<Scalars['String']>;
   published?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
@@ -396,6 +399,7 @@ export type Posts_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  image_url?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['Int']>;
@@ -407,6 +411,7 @@ export type Posts_Max_Order_By = {
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_url?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -419,6 +424,7 @@ export type Posts_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  image_url?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['Int']>;
@@ -430,6 +436,7 @@ export type Posts_Min_Order_By = {
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_url?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -457,6 +464,7 @@ export type Posts_Order_By = {
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
+  image_url?: InputMaybe<Order_By>;
   published?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
@@ -480,6 +488,8 @@ export enum Posts_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  ImageUrl = 'image_url',
+  /** column name */
   Published = 'published',
   /** column name */
   Title = 'title',
@@ -495,6 +505,7 @@ export type Posts_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
+  image_url?: InputMaybe<Scalars['String']>;
   published?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
@@ -563,6 +574,8 @@ export enum Posts_Update_Column {
   Description = 'description',
   /** column name */
   Id = 'id',
+  /** column name */
+  ImageUrl = 'image_url',
   /** column name */
   Published = 'published',
   /** column name */
@@ -1069,7 +1082,7 @@ export type Users_Variance_Fields = {
 
 export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, created_at: any, role: string };
 
-export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, created_at: any, published: boolean, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
+export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
 
 export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, created_at: any, profile_picture?: string | null, role: string };
 
@@ -1093,7 +1106,7 @@ export type InsertPostMutationVariables = Exact<{
 }>;
 
 
-export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, created_at: any, published: boolean, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type UpdatePostMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -1143,14 +1156,14 @@ export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __
 export type GetPostsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content: string, created_at: any, published: boolean, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
+export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
 
 export type GetPostByPkSubscriptionVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, created_at: any, published: boolean, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type PostsCountSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -1179,8 +1192,10 @@ export const PostFieldsFragmentDoc = gql`
   title
   description
   content
-  created_at
   published
+  createdAt: created_at
+  updatedAt: updated_at
+  imageUrl: image_url
   userId: user_id
   user {
     name

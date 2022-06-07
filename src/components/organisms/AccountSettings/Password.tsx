@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import {
   useChangePasswordMutation,
   useGetUserByPkSubscription,
-} from '../../../graphql/gen/graphql';
-import { useAuth } from '../../../hooks/useAuth';
-import { ChangePasswordInputs } from '../../../interfaces/ChangePasswordInputs.types';
-import { ChangePasswordSchema } from '../../../validators/ChangePassword.validator';
-import { Loader } from '../../atoms/Loader/Loader';
-import { Notification } from '../../molecules/Notification/Notification';
+} from '@graphql/gen/graphql';
+import { useAuth } from '@hooks';
+import { ChangePasswordInputs } from '@interfaces';
+import { ChangePasswordSchema } from '@validators';
+import { Loader } from '@atoms';
+import { Notification } from '@molecules';
 
 export const Password = (): ReactElement => {
   // local state
@@ -45,7 +45,7 @@ export const Password = (): ReactElement => {
     formState: { dirtyFields, errors },
     reset,
   } = useForm<ChangePasswordInputs>({
-    mode: 'onBlur',
+    mode: 'onSubmit',
     resolver: joiResolver(ChangePasswordSchema()),
   });
 

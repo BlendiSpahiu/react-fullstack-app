@@ -3,9 +3,9 @@ import { ChevronDownIcon } from '@heroicons/react/outline';
 import { Button } from '@ornio-no/ds';
 import clsx from 'clsx';
 import { Fragment, ReactElement } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import { navbarLinks } from '../../../static/navbarLinks';
-import { NavLink } from '../../molecules/NavLink/NavLink';
+import { useAuth } from '@hooks';
+import { navbarLinks } from '@static';
+import { NavLink } from '@molecules';
 
 export const Navbar = (): ReactElement => {
   // hooks
@@ -23,6 +23,7 @@ export const Navbar = (): ReactElement => {
           <li key={link.path}>
             <NavLink
               className={clsx('p-2 hover:bg-indigo-400 hover:rounded-xl')}
+              activeClassname="bg-indigo-500 rounded-lg"
               to={`${link.path}`}
             >
               {link.label}
@@ -57,6 +58,7 @@ export const Navbar = (): ReactElement => {
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                     )}
+                    activeClassname="bg-gray-200"
                   >
                     Settings
                   </NavLink>
