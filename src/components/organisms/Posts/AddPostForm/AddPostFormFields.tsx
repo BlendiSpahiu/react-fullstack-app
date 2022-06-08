@@ -80,7 +80,7 @@ export const AddPostFormFields = ({
       <textarea
         {...register('content')}
         defaultValue={''}
-        rows={post?.content.trim().length || 0 > 500 ? 25 : 10}
+        rows={25}
         name="content"
         id="content"
         className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
