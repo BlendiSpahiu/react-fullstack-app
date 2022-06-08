@@ -19,7 +19,7 @@ export const Post = (): ReactElement => {
   if (loading) return <Loader />;
 
   return (
-    <div className="relative py-16 overflow-hidden bg-white">
+    <div className="relative py-16 mt-24 overflow-hidden bg-white">
       <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full"></div>
       <div className="relative px-4 sm:px-6 lg:px-8">
         <div className="mx-auto text-lg max-w-prose">
@@ -42,10 +42,6 @@ export const Post = (): ReactElement => {
           className="mx-auto mt-6 prose prose-lg text-gray-500 whitespace-pre-wrap prose-indigo"
           dangerouslySetInnerHTML={{ __html: replaceURLs(post?.content || '') }}
         />
-      </div>
-
-      <div className="fixed bottom-0 left-0 p-6 text-gray-700 bg-white border border-gray-400 rounded-tr-md">
-        A post by - {post?.user?.name}
       </div>
     </div>
   );

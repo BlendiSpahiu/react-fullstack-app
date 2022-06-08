@@ -70,7 +70,7 @@ export const PersonalInformation = (): ReactElement => {
         userId: user?.id || 0,
         data: {
           name: data.name,
-          profile_picture: fileUrl,
+          profile_picture: fileUrl || user?.profilePicture || '',
         },
       },
     });
@@ -101,7 +101,7 @@ export const PersonalInformation = (): ReactElement => {
                   <p className="mt-1 text-sm text-gray-500">
                     Member since
                     <span className="ml-1 font-semibold">
-                      {formatDate(userByPk?.created_at)}
+                      {formatDate(userByPk?.createdAt)}
                     </span>
                   </p>
                 </div>
@@ -158,7 +158,7 @@ export const PersonalInformation = (): ReactElement => {
                     accept="image/png,image/gif,image/jpeg"
                     defaultPreview={{
                       name: 'default image',
-                      src: userByPk?.profile_picture || '',
+                      src: userByPk?.profilePicture || '',
                       type: FileTypeEnum.image,
                     }}
                     helptext="PNG, JPG, GIF up to 10MB"
@@ -176,7 +176,12 @@ export const PersonalInformation = (): ReactElement => {
                   <Button type="button" color="none">
                     Cancel
                   </Button>
-                  <Button loading={loading} disabled={!isDirty} type="submit">
+                  <Button
+                    className="bg-indigo-600"
+                    loading={loading}
+                    disabled={!isDirty && !fileUrl}
+                    type="submit"
+                  >
                     Save
                   </Button>
                 </div>

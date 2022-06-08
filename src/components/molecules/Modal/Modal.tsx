@@ -100,9 +100,9 @@ export const Modal = ({
                 </div>
                 <div className="mt-5 sm:mt-6">
                   <Button
-                    className="w-full"
                     type="button"
                     color={publish ? 'none' : 'danger'}
+                    className={clsx('w-full', publish ? '' : 'bg-red-600')}
                     onClick={handleOnClick}
                   >
                     {buttonLabel}

@@ -1,23 +1,22 @@
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/outline';
-import { Button } from '@ornio-no/ds';
+import { Avatar, Button } from '@ornio-no/ds';
 import clsx from 'clsx';
 import { Fragment, ReactElement } from 'react';
 import { useAuth } from '@hooks';
 import { navbarLinks } from '@static';
 import { NavLink } from '@molecules';
+import { Logo } from '@atoms';
 
 export const Navbar = (): ReactElement => {
   // hooks
   const { user, logout } = useAuth();
 
-  // constants
-  const classNames = (...classes: string[]) => {
-    return classes.filter(Boolean).join(' ');
-  };
-
   return (
-    <nav className="flex justify-between w-full px-12 py-6 bg-indigo-600 sm:px-40">
+    <nav className="fixed top-0 z-10 flex justify-between w-full px-12 bg-indigo-600 sm:px-40">
+      <NavLink to="/posts">
+        <Logo className="w-20 h-20" />
+      </NavLink>
       <ul className="flex items-center text-white sm:space-x-6">
         {navbarLinks.map((link) => (
           <li key={link.path}>
@@ -37,7 +36,12 @@ export const Navbar = (): ReactElement => {
             <Menu.Button className="flex items-center text-sm rounded-full focus:outline-none">
               <span className="sr-only">Open user menu</span>
               <p className="text-base font-semibold text-white">{user?.name}</p>
-              <ChevronDownIcon className="w-5 h-5 ml-1 text-gray-400" />
+              <Avatar
+                src={user?.profilePicture || ''}
+                size="sm"
+                className="mx-2"
+              />
+              <ChevronDownIcon className="w-5 h-5 text-gray-400" />
             </Menu.Button>
           </div>
           <Transition
@@ -54,7 +58,7 @@ export const Navbar = (): ReactElement => {
                 {({ active }) => (
                   <NavLink
                     to="/account/settings"
-                    className={classNames(
+                    className={clsx(
                       active ? 'bg-gray-100' : '',
                       'block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                     )}
@@ -70,7 +74,7 @@ export const Navbar = (): ReactElement => {
                     onClick={logout}
                     link
                     color="none"
-                    className={classNames(
+                    className={clsx(
                       active ? 'bg-gray-100' : '',
                       'flex w-full px-4 py-2 text-sm text-gray-600 rounded-t-none'
                     )}

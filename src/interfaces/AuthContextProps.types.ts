@@ -3,7 +3,7 @@ import { Nullable } from './Nullable.types';
 
 export type AuthUser = Pick<
   UserFieldsFragment,
-  'id' | 'email' | 'name' | 'role' | 'profile_picture' | 'created_at'
+  'id' | 'email' | 'name' | 'role' | 'profilePicture' | 'createdAt'
 >;
 
 export interface AuthContextProps {

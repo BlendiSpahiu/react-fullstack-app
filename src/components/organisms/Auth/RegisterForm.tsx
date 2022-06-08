@@ -119,8 +119,13 @@ export const RegisterForm = (): ReactElement => {
               </div>
 
               <div>
-                <Button loading={loading} type="submit">
-                  Sign Up
+                <Button
+                  className="bg-indigo-600"
+                  color="primary"
+                  loading={loading}
+                  type="submit"
+                >
+                  Register
                 </Button>
               </div>
 

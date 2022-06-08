@@ -141,6 +141,7 @@ export const Password = (): ReactElement => {
               Cancel
             </Button>
             <Button
+              className="bg-indigo-600"
               disabled={
                 !dirtyFields.newPassword || !dirtyFields.repeatNewPassword
               }

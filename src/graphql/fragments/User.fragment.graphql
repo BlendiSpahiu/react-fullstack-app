@@ -2,7 +2,7 @@ fragment UserFields on users {
   id
   name
   email
-  created_at
-  profile_picture
   role
+  createdAt: created_at
+  profilePicture: profile_picture
 }

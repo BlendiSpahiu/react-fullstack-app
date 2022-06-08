@@ -1080,11 +1080,11 @@ export type Users_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, created_at: any, role: string };
+export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null };
 
 export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
 
-export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, created_at: any, profile_picture?: string | null, role: string };
+export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1151,7 +1151,7 @@ export type UpdatePersonalInfoMutation = { __typename?: 'mutation_root', updateU
 export type GetAuthUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __typename?: 'users', id: number, name: string, email: string, created_at: any, role: string }> };
+export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null }> };
 
 export type GetPostsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -1175,15 +1175,16 @@ export type GetUserByPkSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetUserByPkSubscription = { __typename?: 'subscription_root', userByPk?: { __typename?: 'users', id: number, name: string, email: string, created_at: any, profile_picture?: string | null, role: string } | null };
+export type GetUserByPkSubscription = { __typename?: 'subscription_root', userByPk?: { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null } | null };
 
 export const AuthUserFieldsFragmentDoc = gql`
     fragment AuthUserFields on users {
   id
   name
   email
-  created_at
   role
+  createdAt: created_at
+  profilePicture: profile_picture
 }
     `;
 export const PostFieldsFragmentDoc = gql`
@@ -1208,9 +1209,9 @@ export const UserFieldsFragmentDoc = gql`
   id
   name
   email
-  created_at
-  profile_picture
   role
+  createdAt: created_at
+  profilePicture: profile_picture
 }
     `;
 export const LoginDocument = gql`

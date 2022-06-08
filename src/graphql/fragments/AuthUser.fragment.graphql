@@ -2,6 +2,7 @@ fragment AuthUserFields on users {
   id
   name
   email
-  created_at
   role
+  createdAt: created_at
+  profilePicture: profile_picture
 }
