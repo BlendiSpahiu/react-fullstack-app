@@ -5,7 +5,7 @@ import {
   EyeOffIcon,
 } from '@heroicons/react/solid';
 import Tooltip from '@mui/material/Tooltip';
-import { If, Button, Ternary } from '@ornio-no/ds';
+import { If, Button } from '@ornio-no/ds';
 import { formatDate, formatDateExtended } from '@utils';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const PostItem = ({
             <Tooltip title="Delete" arrow>
               <Button
                 color="none"
-                className="p-0"
+                className="p-0 focus:outline-none"
                 link
                 onClick={handleSetModal(post?.id || 0)}
                 iconLeft={
@@ -65,41 +65,33 @@ export const PostItem = ({
             <Tooltip title="Edit" arrow>
               <Button
                 color="none"
-                className="p-0"
+                className="p-0 focus:outline-none"
                 link
                 onClick={handleEditPost(post?.id || 0)}
                 iconLeft={
-                  <PencilIcon className="w-6 h-6 text-gray-400 hover:text-gray-600 hover:rounded-full focus:outline-none" />
+                  <PencilIcon className="w-6 h-6 text-gray-400 hover:text-gray-600 hover:rounded-full" />
                 }
               />
             </Tooltip>
-            <Ternary
-              condition={!post?.published}
-              fallback={
-                <Tooltip title="Publish" arrow>
-                  <Button
-                    color="none"
-                    className="p-0"
-                    link
-                    onClick={handleEditPost(post?.id || 0)}
-                    iconLeft={
-                      <EyeIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
-                    }
-                  />
-                </Tooltip>
-              }
+
+            <Tooltip
+              title={post?.published ? 'Published' : 'Unpublished'}
+              arrow
             >
-              <Tooltip title="Unpublish" arrow>
-                <Button
-                  color="none"
-                  className="p-0"
-                  link
-                  iconLeft={
-                    <EyeOffIcon className="w-6 h-6 text-gray-700 hover:text-gray-900 focus:outline-none" />
-                  }
-                />
-              </Tooltip>
-            </Ternary>
+              <Button
+                color="none"
+                className="p-0 focus:outline-none"
+                link
+                onClick={handleEditPost(post?.id || 0)}
+                iconLeft={
+                  post?.published ? (
+                    <EyeIcon className="w-6 h-6 text-gray-700 hover:text-gray-900" />
+                  ) : (
+                    <EyeOffIcon className="w-6 h-6 text-gray-700 hover:text-gray-900" />
+                  )
+                }
+              />
+            </Tooltip>
           </div>
 
           <div className="text-sm text-gray-500">

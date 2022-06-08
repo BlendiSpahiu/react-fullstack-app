@@ -89,7 +89,7 @@ export const PersonalInformation = (): ReactElement => {
         <div className="overflow-hidden bg-white shadow">
           <div className="divide-gray-200 lg:divide-y-0 lg:divide-x">
             <form
-              className="divide-y divide-gray-200 lg:col-span-9"
+              className="divide-y divide-gray-200"
               onSubmit={handleSubmit(handleChangeInfo)}
             >
               {/* Profile section */}
@@ -106,7 +106,7 @@ export const PersonalInformation = (): ReactElement => {
                   </p>
                 </div>
 
-                <div className="flex flex-col mt-6 lg:flex-row">
+                <div className="flex flex-col mt-6">
                   <div className="flex-grow space-y-6">
                     <div>
                       <label
@@ -115,14 +115,14 @@ export const PersonalInformation = (): ReactElement => {
                       >
                         Username
                       </label>
-                      <div className="flex mt-1">
+                      <div className="flex w-[400px] mt-1">
                         <input
                           {...register('name')}
                           type="text"
                           name="name"
                           id="name"
                           autoComplete="name"
-                          className="flex-grow block w-full min-w-0 p-3 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                          className="flex-grow block min-w-0 p-3 border border-gray-300 rounded-lg focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                         />
                         {errors.name && (
                           <p className="mt-1 text-red-500">

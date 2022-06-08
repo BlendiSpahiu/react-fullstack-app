@@ -81,7 +81,7 @@ export const Password = (): ReactElement => {
             </p>
           </div>
 
-          <div className="flex flex-col mt-6 space-y-6 lg:flex-row">
+          <div className="flex flex-col mt-6 space-y-6">
             <div className="flex-grow">
               <label
                 htmlFor="newPassword"

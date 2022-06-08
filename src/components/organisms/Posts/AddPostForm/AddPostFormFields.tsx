@@ -70,7 +70,7 @@ export const AddPostFormFields = ({
       />
     </div>
 
-    <div className="col-span-6 sm:col-span-4">
+    <div className="col-span-6">
       <label
         htmlFor="content"
         className="block text-sm font-medium text-gray-700"
@@ -80,7 +80,7 @@ export const AddPostFormFields = ({
       <textarea
         {...register('content')}
         defaultValue={''}
-        rows={10}
+        rows={post?.content.trim().length || 0 > 500 ? 25 : 10}
         name="content"
         id="content"
         className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
