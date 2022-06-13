@@ -78,8 +78,12 @@ export const PersonalInformation = (): ReactElement => {
 
   // useEffect
   useEffect(() => {
-    if (userByPk) reset({ ...userByPk });
-  }, [reset, userByPk]);
+    if (user)
+      reset({
+        ...user,
+        role: user.role[0].toUpperCase() + user.role.substring(1),
+      });
+  }, [reset, user]);
 
   if (userLoading) return <Loader className="relative" />;
 
@@ -144,7 +148,6 @@ export const PersonalInformation = (): ReactElement => {
                       <input
                         {...register('role')}
                         disabled
-                        defaultValue={user?.role.toUpperCase()}
                         type="text"
                         name="role"
                         id="role"
@@ -158,7 +161,7 @@ export const PersonalInformation = (): ReactElement => {
                     accept="image/png,image/gif,image/jpeg"
                     defaultPreview={{
                       name: 'default image',
-                      src: userByPk?.profilePicture || '',
+                      src: user?.profilePicture || '',
                       type: FileTypeEnum.image,
                     }}
                     helptext="PNG, JPG, GIF up to 10MB"

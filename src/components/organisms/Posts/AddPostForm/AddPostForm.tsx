@@ -9,7 +9,14 @@ import {
   usePublishPostMutation,
   useUpdatePostMutation,
 } from '@graphql/gen/graphql';
-import { Button, If, Ternary } from '@ornio-no/ds';
+import {
+  ActionPanel,
+  Button,
+  ButtonGroup,
+  Dropdown,
+  If,
+  Ternary,
+} from '@ornio-no/ds';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '@hooks';
 import { Loader } from '@atoms';
@@ -17,6 +24,7 @@ import { Modal, Notification } from '@molecules';
 import { AddPostFormFields } from '@organisms';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import { Upload } from 'upload-js';
+import { PostStatusEnums } from '@enums';
 
 export const AddPostForm = (): ReactElement => {
   // local state
@@ -38,6 +46,9 @@ export const AddPostForm = (): ReactElement => {
     handleSubmit,
     formState: { errors, isDirty },
     reset,
+    trigger,
+    getValues,
+    clearErrors,
   } = useForm<PostInputs>({
     resolver: joiResolver(AddPostFormSchema()),
     mode: 'onChange',
@@ -95,11 +106,13 @@ export const AddPostForm = (): ReactElement => {
 
   // constants
   const isEditing = pathname.includes('edit');
+  const { PUBLISHED } = PostStatusEnums;
+  const isPublished = post?.status === PUBLISHED;
 
   // handlers
   const hanldeSetModal = () => {
     setOpen(!open);
-    !post?.published
+    !isPublished
       ? navigate(`/edit/post/publish/${post?.id}`)
       : navigate(`/edit/post/unpublish/${post?.id}`);
   };
@@ -108,11 +121,30 @@ export const AddPostForm = (): ReactElement => {
       variables: {
         postId: post?.id || 0,
         set: {
-          published: !post?.published ? true : false,
+          status: PUBLISHED,
         },
       },
     });
   };
+
+  const handleDraftPost =
+    ({ title, content, description }: PostInputs) =>
+    () => {
+      clearErrors && clearErrors('content');
+      trigger('title');
+      insertPost({
+        variables: {
+          object: {
+            title,
+            content,
+            description,
+            user_id: user?.id,
+            image_url: postImageUrl,
+            status: PostStatusEnums.DRAFT,
+          },
+        },
+      });
+    };
 
   const handleSubmitForm = ({ title, content, description }: PostInputs) => {
     !isEditing
@@ -124,6 +156,7 @@ export const AddPostForm = (): ReactElement => {
               description,
               user_id: user?.id,
               image_url: postImageUrl,
+              status: PostStatusEnums.PUBLISHED,
             },
           },
         })
@@ -145,8 +178,8 @@ export const AddPostForm = (): ReactElement => {
   useEffect(() => {
     isEditing &&
       reset({
-        title: post?.title,
-        content: post?.content,
+        title: post?.title || '',
+        content: post?.content || '',
         description: post?.description || '',
       });
   }, [id, isEditing, post, reset]);
@@ -178,7 +211,7 @@ export const AddPostForm = (): ReactElement => {
           <div className="flex items-center justify-end px-4 py-3 space-x-4 bg-gray-50 sm:px-6">
             <If condition={isEditing}>
               <Ternary
-                condition={isEditing && !post?.published}
+                condition={isEditing && isPublished}
                 fallback={
                   <Button
                     loading={publishLoading}
@@ -203,29 +236,63 @@ export const AddPostForm = (): ReactElement => {
               </Ternary>
             </If>
 
-            <Button color="none" onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button
-              loading={!!insertLoading || !!updateLoading || loading}
-              disabled={!errors || !isDirty}
-              type="submit"
-              className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              {isEditing ? 'Update' : 'Add Post'}
-            </Button>
+            <ActionPanel.Actions>
+              <Button color="none" onClick={handleCancel}>
+                Cancel
+              </Button>
+              <ButtonGroup color="primary">
+                <Button
+                  disabled={!isDirty}
+                  loading={insertLoading || loading || updateLoading}
+                  type="submit"
+                  color="primary"
+                  className="bg-indigo-600"
+                >
+                  {isEditing ? 'Save changes' : 'Add Post'}
+                </Button>
+                <Dropdown>
+                  <Dropdown.Trigger
+                    disabled={!isDirty}
+                    className="text-white bg-indigo-600 hover:bg-indigo-600 disabled:opacity-50"
+                  />
+                  <Dropdown.Menu className="absolute bottom-[44px]">
+                    <Dropdown.Group>
+                      <Dropdown.Item
+                        id="add-post"
+                        as="button"
+                        role="button"
+                        type="submit"
+                        disabled={loading && insertLoading && updateLoading}
+                      >
+                        {isEditing ? 'Update' : 'Save and Publish'}
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        id="draft"
+                        as="button"
+                        role="button"
+                        type="submit"
+                        disabled={loading && insertLoading && updateLoading}
+                        onClick={handleDraftPost({ ...getValues() })}
+                      >
+                        Save as Draft
+                      </Dropdown.Item>
+                    </Dropdown.Group>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </ButtonGroup>
+            </ActionPanel.Actions>
           </div>
         </div>
       </form>
 
       <Modal
-        title={!post?.published ? 'Publish' : 'Unpublish'}
+        title={!isPublished ? 'Publish' : 'Unpublish'}
         description={
-          !post?.published
+          !isPublished
             ? 'Are you sure you want to publish your post?'
             : 'Are you sure you want to unpublish your post?'
         }
-        buttonLabel={!post?.published ? 'Publish' : 'Unpublish'}
+        buttonLabel={!isPublished ? 'Publish' : 'Unpublish'}
         publish
         open={open}
         setOpen={setOpen}

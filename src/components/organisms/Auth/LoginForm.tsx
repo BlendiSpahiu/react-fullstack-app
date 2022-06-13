@@ -1,4 +1,5 @@
 import { joiResolver } from '@hookform/resolvers/joi';
+import { If } from '@ornio-no/ds';
 import { ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -10,6 +11,7 @@ import { LoginFormSchema } from '../../../validators/Login.validator';
 export const LoginForm = (): ReactElement => {
   // local state
   const [serverError, setServerError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   // hooks
   const { login } = useAuth();
@@ -30,7 +32,10 @@ export const LoginForm = (): ReactElement => {
         navigate('/posts');
       }
     },
-    onError: () => setServerError(true),
+    onError: (err) => {
+      setServerError(true);
+      setErrorMessage(err.message);
+    },
   });
 
   // handlers
@@ -130,11 +135,12 @@ export const LoginForm = (): ReactElement => {
                 </button>
               </div>
 
-              {serverError && (
-                <div className="flex justify-center w-full py-2 text-red-600 rounded-md bg-red-50">
-                  Something went wrong. Please try again later.
+              <If condition={serverError}>
+                <div className="flex justify-center w-full p-2 text-red-600 rounded-md bg-red-50">
+                  {errorMessage}
                 </div>
-              )}
+              </If>
+
               <NavLink
                 className="flex justify-center mt-4 text-sm text-indigo-600 underline"
                 to="/auth/register"
