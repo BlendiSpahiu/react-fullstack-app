@@ -16,19 +16,6 @@ export type Scalars = {
   timestamptz: any;
 };
 
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type Boolean_Comparison_Exp = {
-  _eq?: InputMaybe<Scalars['Boolean']>;
-  _gt?: InputMaybe<Scalars['Boolean']>;
-  _gte?: InputMaybe<Scalars['Boolean']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Boolean']>;
-  _lte?: InputMaybe<Scalars['Boolean']>;
-  _neq?: InputMaybe<Scalars['Boolean']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
-};
-
 export type ChangePasswordInput = {
   password: Scalars['String'];
   userId: Scalars['Int'];
@@ -271,12 +258,12 @@ export enum Order_By {
 /** columns and relationships of "posts" */
 export type Posts = {
   __typename?: 'posts';
-  content: Scalars['String'];
+  content?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   image_url?: Maybe<Scalars['String']>;
-  published: Scalars['Boolean'];
+  status: Scalars['Int'];
   title: Scalars['String'];
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -340,12 +327,14 @@ export type Posts_Arr_Rel_Insert_Input = {
 export type Posts_Avg_Fields = {
   __typename?: 'posts_avg_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "posts" */
 export type Posts_Avg_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -359,7 +348,7 @@ export type Posts_Bool_Exp = {
   description?: InputMaybe<String_Comparison_Exp>;
   id?: InputMaybe<Int_Comparison_Exp>;
   image_url?: InputMaybe<String_Comparison_Exp>;
-  published?: InputMaybe<Boolean_Comparison_Exp>;
+  status?: InputMaybe<Int_Comparison_Exp>;
   title?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user?: InputMaybe<Users_Bool_Exp>;
@@ -375,6 +364,7 @@ export enum Posts_Constraint {
 /** input type for incrementing numeric columns in table "posts" */
 export type Posts_Inc_Input = {
   id?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<Scalars['Int']>;
   user_id?: InputMaybe<Scalars['Int']>;
 };
 
@@ -385,7 +375,7 @@ export type Posts_Insert_Input = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   image_url?: InputMaybe<Scalars['String']>;
-  published?: InputMaybe<Scalars['Boolean']>;
+  status?: InputMaybe<Scalars['Int']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   user?: InputMaybe<Users_Obj_Rel_Insert_Input>;
@@ -400,6 +390,7 @@ export type Posts_Max_Fields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   image_url?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['Int']>;
@@ -412,6 +403,7 @@ export type Posts_Max_Order_By = {
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -425,6 +417,7 @@ export type Posts_Min_Fields = {
   description?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   image_url?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['Int']>;
   title?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['Int']>;
@@ -437,6 +430,7 @@ export type Posts_Min_Order_By = {
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
@@ -465,7 +459,7 @@ export type Posts_Order_By = {
   description?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   image_url?: InputMaybe<Order_By>;
-  published?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   title?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user?: InputMaybe<Users_Order_By>;
@@ -490,7 +484,7 @@ export enum Posts_Select_Column {
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
-  Published = 'published',
+  Status = 'status',
   /** column name */
   Title = 'title',
   /** column name */
@@ -506,7 +500,7 @@ export type Posts_Set_Input = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   image_url?: InputMaybe<Scalars['String']>;
-  published?: InputMaybe<Scalars['Boolean']>;
+  status?: InputMaybe<Scalars['Int']>;
   title?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   user_id?: InputMaybe<Scalars['Int']>;
@@ -516,12 +510,14 @@ export type Posts_Set_Input = {
 export type Posts_Stddev_Fields = {
   __typename?: 'posts_stddev_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "posts" */
 export type Posts_Stddev_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -529,12 +525,14 @@ export type Posts_Stddev_Order_By = {
 export type Posts_Stddev_Pop_Fields = {
   __typename?: 'posts_stddev_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "posts" */
 export type Posts_Stddev_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -542,12 +540,14 @@ export type Posts_Stddev_Pop_Order_By = {
 export type Posts_Stddev_Samp_Fields = {
   __typename?: 'posts_stddev_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "posts" */
 export type Posts_Stddev_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -555,12 +555,14 @@ export type Posts_Stddev_Samp_Order_By = {
 export type Posts_Sum_Fields = {
   __typename?: 'posts_sum_fields';
   id?: Maybe<Scalars['Int']>;
+  status?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "posts" */
 export type Posts_Sum_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -577,7 +579,7 @@ export enum Posts_Update_Column {
   /** column name */
   ImageUrl = 'image_url',
   /** column name */
-  Published = 'published',
+  Status = 'status',
   /** column name */
   Title = 'title',
   /** column name */
@@ -590,12 +592,14 @@ export enum Posts_Update_Column {
 export type Posts_Var_Pop_Fields = {
   __typename?: 'posts_var_pop_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "posts" */
 export type Posts_Var_Pop_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -603,12 +607,14 @@ export type Posts_Var_Pop_Order_By = {
 export type Posts_Var_Samp_Fields = {
   __typename?: 'posts_var_samp_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "posts" */
 export type Posts_Var_Samp_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -616,12 +622,14 @@ export type Posts_Var_Samp_Order_By = {
 export type Posts_Variance_Fields = {
   __typename?: 'posts_variance_fields';
   id?: Maybe<Scalars['Float']>;
+  status?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "posts" */
 export type Posts_Variance_Order_By = {
   id?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
 
@@ -809,7 +817,7 @@ export type Timestamptz_Comparison_Exp = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
-  created_at: Scalars['timestamptz'];
+  created_at?: Maybe<Scalars['timestamptz']>;
   email: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -820,7 +828,7 @@ export type Users = {
   posts_aggregate: Posts_Aggregate;
   profile_picture?: Maybe<Scalars['String']>;
   role: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
+  updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
 
@@ -1080,11 +1088,11 @@ export type Users_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
 };
 
-export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null };
+export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null };
 
-export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
+export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
 
-export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null };
+export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
@@ -1106,7 +1114,7 @@ export type InsertPostMutationVariables = Exact<{
 }>;
 
 
-export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type UpdatePostMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -1151,19 +1159,19 @@ export type UpdatePersonalInfoMutation = { __typename?: 'mutation_root', updateU
 export type GetAuthUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null }> };
+export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null }> };
 
 export type GetPostsSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
+export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
 
 export type GetPostByPkSubscriptionVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content: string, published: boolean, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type PostsCountSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -1175,7 +1183,7 @@ export type GetUserByPkSubscriptionVariables = Exact<{
 }>;
 
 
-export type GetUserByPkSubscription = { __typename?: 'subscription_root', userByPk?: { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt: any, profilePicture?: string | null } | null };
+export type GetUserByPkSubscription = { __typename?: 'subscription_root', userByPk?: { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null } | null };
 
 export const AuthUserFieldsFragmentDoc = gql`
     fragment AuthUserFields on users {
@@ -1193,7 +1201,7 @@ export const PostFieldsFragmentDoc = gql`
   title
   description
   content
-  published
+  status
   createdAt: created_at
   updatedAt: updated_at
   imageUrl: image_url

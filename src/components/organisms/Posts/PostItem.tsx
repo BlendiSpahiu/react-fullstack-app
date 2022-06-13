@@ -5,8 +5,9 @@ import {
   EyeOffIcon,
 } from '@heroicons/react/solid';
 import Tooltip from '@mui/material/Tooltip';
-import { If, Button } from '@ornio-no/ds';
+import { If, Button, Badge } from '@ornio-no/ds';
 import { formatDate, formatDateExtended } from '@utils';
+import { PostStatusEnums } from '@enums';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { PostItemProps } from './Post.props';
@@ -16,6 +17,10 @@ export const PostItem = ({
   handleEditPost,
   handleSetModal,
 }: PostItemProps): ReactElement => {
+  // constants
+  const { PUBLISHED } = PostStatusEnums;
+  const isDraft = post?.status === PostStatusEnums.DRAFT;
+
   return (
     <li
       key={post?.id}
@@ -24,9 +29,14 @@ export const PostItem = ({
       <div className="flex flex-col flex-1 p-6">
         <NavLink
           to={`/post/${post?.id}`}
-          className="text-lg font-semibold !leading-snug tracking-tight text-gray-900 "
+          className="text-lg flex items-center font-semibold !leading-snug tracking-tight text-gray-900"
         >
-          {post?.title}
+          {post?.title} -{' '}
+          {isDraft && (
+            <Badge className="ml-1" variant="warning">
+              Draft
+            </Badge>
+          )}
         </NavLink>
         <If condition={!!post?.imageUrl}>
           <img className="mt-2" src={post?.imageUrl || ''} alt="Post" />
@@ -75,7 +85,7 @@ export const PostItem = ({
             </Tooltip>
 
             <Tooltip
-              title={post?.published ? 'Published' : 'Unpublished'}
+              title={post?.status === PUBLISHED ? 'Published' : 'Unpublished'}
               arrow
             >
               <Button
@@ -84,7 +94,7 @@ export const PostItem = ({
                 link
                 onClick={handleEditPost(post?.id || 0)}
                 iconLeft={
-                  post?.published ? (
+                  post?.status === PUBLISHED ? (
                     <EyeIcon className="w-6 h-6 text-gray-700 hover:text-gray-900" />
                   ) : (
                     <EyeOffIcon className="w-6 h-6 text-gray-700 hover:text-gray-900" />

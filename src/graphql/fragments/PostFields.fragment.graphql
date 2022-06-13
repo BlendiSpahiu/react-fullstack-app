@@ -3,7 +3,7 @@ fragment PostFields on posts {
   title
   description
   content
-  published
+  status
   createdAt: created_at
   updatedAt: updated_at
   imageUrl: image_url

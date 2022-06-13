@@ -1,5 +1,5 @@
 import { joiResolver } from '@hookform/resolvers/joi';
-import { Button } from '@ornio-no/ds';
+import { Button, If } from '@ornio-no/ds';
 import { ReactElement, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { RegisterFormSchema } from '../../../validators/Register.validator';
 export const RegisterForm = (): ReactElement => {
   // local state
   const [serverError, setServerError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   // hooks
   const { login } = useAuth();
@@ -28,6 +29,10 @@ export const RegisterForm = (): ReactElement => {
       setServerError(false);
       login(registerData?.token || '');
       navigate('/posts');
+    },
+    onError: (err) => {
+      setServerError(!serverError);
+      setErrorMessage(err.message);
     },
   });
 
@@ -118,16 +123,20 @@ export const RegisterForm = (): ReactElement => {
                 </div>
               </div>
 
-              <div>
-                <Button
-                  className="bg-indigo-600"
-                  color="primary"
-                  loading={loading}
-                  type="submit"
-                >
-                  Register
-                </Button>
-              </div>
+              <If condition={serverError}>
+                <div className="flex justify-center w-full p-2 text-red-600 rounded-md bg-red-50">
+                  {errorMessage}
+                </div>
+              </If>
+
+              <Button
+                className="w-full bg-indigo-600"
+                color="primary"
+                loading={loading}
+                type="submit"
+              >
+                Register
+              </Button>
 
               <div className="flex justify-center text-sm text-indigo-600 underline">
                 <NavLink to="/auth/login">
