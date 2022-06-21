@@ -9,16 +9,9 @@ import {
   usePublishPostMutation,
   useUpdatePostMutation,
 } from '@graphql/gen/graphql';
-import {
-  ActionPanel,
-  Button,
-  ButtonGroup,
-  Dropdown,
-  If,
-  Ternary,
-} from '@ornio-no/ds';
+import { Button, ButtonGroup, Dropdown, If, Ternary } from '@ornio-no/ds';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useAuth } from '@hooks';
+import { useAuth, usePreview } from '@hooks';
 import { Loader } from '@atoms';
 import { Modal, Notification } from '@molecules';
 import { AddPostFormFields } from '@organisms';
@@ -39,6 +32,7 @@ export const AddPostForm = (): ReactElement => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { previewedPost, setPreviedPost } = usePreview();
 
   // hook form
   const {
@@ -127,24 +121,20 @@ export const AddPostForm = (): ReactElement => {
     });
   };
 
-  const handleDraftPost =
-    ({ title, content, description }: PostInputs) =>
-    () => {
-      clearErrors && clearErrors('content');
-      trigger('title');
-      insertPost({
-        variables: {
-          object: {
-            title,
-            content,
-            description,
-            user_id: user?.id,
-            image_url: postImageUrl,
-            status: PostStatusEnums.DRAFT,
-          },
+  const handleDraftPost = (data: PostInputs) => () => {
+    clearErrors && clearErrors();
+    trigger('title');
+    insertPost({
+      variables: {
+        object: {
+          ...data,
+          user_id: user?.id,
+          image_url: postImageUrl,
+          status: PostStatusEnums.DRAFT,
         },
-      });
-    };
+      },
+    });
+  };
 
   const handleSubmitForm = ({ title, content, description }: PostInputs) => {
     !isEditing
@@ -173,7 +163,15 @@ export const AddPostForm = (): ReactElement => {
         });
   };
 
-  const handleCancel = () => navigate('/posts');
+  const handlePreviewPost = (data: PostInputs) => {
+    setPreviedPost({ ...data, imageUrl: postImageUrl || '', user });
+    // navigate('/post/preview');
+  };
+
+  const handleCancel = () => {
+    setPreviedPost(null);
+    navigate('/posts');
+  };
 
   useEffect(() => {
     isEditing &&
@@ -185,6 +183,8 @@ export const AddPostForm = (): ReactElement => {
   }, [id, isEditing, post, reset]);
 
   if (loadingData) return <Loader />;
+
+  console.log(previewedPost);
 
   return (
     <>
@@ -208,35 +208,43 @@ export const AddPostForm = (): ReactElement => {
               post={post}
             />
           </div>
-          <div className="flex items-center justify-end px-4 py-3 space-x-4 bg-gray-50 sm:px-6">
-            <If condition={isEditing}>
-              <Ternary
-                condition={isEditing && isPublished}
-                fallback={
+          <div className="flex items-center justify-between px-4 py-3 space-x-4 bg-gray-50 sm:px-6">
+            <Button
+              type="button"
+              onClick={handlePreviewPost}
+              iconLeft={<EyeIcon className="w-5 h-5 text-gray-400" />}
+              color="white"
+            >
+              Preview
+            </Button>
+            <div className="space-x-4">
+              <If condition={isEditing}>
+                <Ternary
+                  condition={isEditing && isPublished}
+                  fallback={
+                    <Button
+                      loading={publishLoading}
+                      onClick={hanldeSetModal}
+                      color="none"
+                      type="button"
+                      iconLeft={<EyeOffIcon className="w-6 h-6 " />}
+                    >
+                      Unpublish
+                    </Button>
+                  }
+                >
                   <Button
                     loading={publishLoading}
                     onClick={hanldeSetModal}
                     color="none"
                     type="button"
-                    iconLeft={<EyeOffIcon className="w-6 h-6 " />}
+                    iconLeft={<EyeIcon className="w-6 h-6 " />}
                   >
-                    Unpublish
+                    Publish
                   </Button>
-                }
-              >
-                <Button
-                  loading={publishLoading}
-                  onClick={hanldeSetModal}
-                  color="none"
-                  type="button"
-                  iconLeft={<EyeIcon className="w-6 h-6 " />}
-                >
-                  Publish
-                </Button>
-              </Ternary>
-            </If>
+                </Ternary>
+              </If>
 
-            <ActionPanel.Actions>
               <Button color="none" onClick={handleCancel}>
                 Cancel
               </Button>
@@ -270,7 +278,7 @@ export const AddPostForm = (): ReactElement => {
                         id="draft"
                         as="button"
                         role="button"
-                        type="submit"
+                        type="button"
                         disabled={loading && insertLoading && updateLoading}
                         onClick={handleDraftPost({ ...getValues() })}
                       >
@@ -280,7 +288,7 @@ export const AddPostForm = (): ReactElement => {
                   </Dropdown.Menu>
                 </Dropdown>
               </ButtonGroup>
-            </ActionPanel.Actions>
+            </div>
           </div>
         </div>
       </form>

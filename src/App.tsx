@@ -29,6 +29,7 @@ export const App = () => (
           <Route path=":modal/:id" element={<EditPostPage />} />
         </Route>
         <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/post/preview" element={<PostPage />} />
         <Route element={<AccountsSettingsPage />}>
           <Route path="/account/settings" element={<PersonalInformation />} />
           <Route path="/account/password" element={<Password />} />
