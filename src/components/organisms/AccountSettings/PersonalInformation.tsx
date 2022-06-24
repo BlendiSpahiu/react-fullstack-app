@@ -54,7 +54,7 @@ export const PersonalInformation = (): ReactElement => {
   });
 
   // upload
-  const upload = new Upload({ apiKey: 'public_FW25aqth2dBeCyy9JW8C1kdTnpZb' });
+  const upload = new Upload({ apiKey: 'free' });
   const uploadFile = upload.createFileInputHandler({
     onProgress: () => setLoading(true),
     onUploaded: ({ fileUrl }) => {

@@ -1,8 +1,10 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { AnnotationIcon } from '@heroicons/react/outline';
+import queryString from 'query-string';
 import { ReactElement, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import {
+  Order_By,
   useDeletePostMutation,
   useGetPostsSubscription,
   usePostsCountSubscription,
@@ -10,6 +12,7 @@ import {
 import { Loader } from '@atoms';
 import { Modal, PageHeader, Notification } from '@molecules';
 import { PostItem } from './PostItem';
+import { useUrlSearchParams } from '@hooks';
 
 export const Posts = (): ReactElement => {
   // local state
@@ -18,10 +21,37 @@ export const Posts = (): ReactElement => {
   const [showNotification, setShowNotification] = useState<boolean>(false);
 
   // hooks
+  const { search } = useLocation();
+  const searchParams = useUrlSearchParams();
   const navigate = useNavigate();
 
+  // constants
+  const queryParams = queryString.parse(search);
+  const { Asc } = Order_By;
+
+  // graphql variable conditions
+  const searchResult = { _ilike: `%${searchParams.get('search')}%` };
+  const where = searchParams.get('search')
+    ? {
+        _or: [
+          { title: searchResult },
+          { description: searchResult },
+          { content: searchResult },
+          { category: searchResult },
+        ],
+      }
+    : {};
+  const orderBy = searchParams.get('sort')
+    ? Object.fromEntries([[queryParams.sort?.toString() || '', Asc]])
+    : {};
+
   // graphql hooks
-  const { data: { posts = [] } = {}, loading } = useGetPostsSubscription();
+  const { data: { posts = [] } = {}, loading } = useGetPostsSubscription({
+    variables: {
+      where: where,
+      orderBy: orderBy,
+    },
+  });
   const [deletePost] = useDeletePostMutation({
     onCompleted: () => {
       setShowNotification(!showNotification);
@@ -55,7 +85,11 @@ export const Posts = (): ReactElement => {
   return (
     <>
       <PageHeader
-        count={count}
+        count={
+          searchParams.get('search') || searchParams.get('sort')
+            ? posts.length
+            : count
+        }
         title="Posts"
         onClick={handleAddNewPost}
         emptyStateTitle="No posts"
@@ -64,7 +98,7 @@ export const Posts = (): ReactElement => {
         emptyStateDescription="Get started by creating a new post."
         icon={<AnnotationIcon className="w-12 h-12 text-gray-400" />}
       />
-      <ul className="grid grid-cols-1 gap-6 mt-10 sm:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-6 mt-10 md:grid-cols-2 sm:grid-cols-3">
         {posts.map((post) => (
           <PostItem
             key={post.id}

@@ -13,7 +13,7 @@ export const Navbar = (): ReactElement => {
   const { user, logout } = useAuth();
 
   return (
-    <nav className="fixed top-0 z-10 flex justify-between w-full px-12 bg-indigo-600 sm:px-40">
+    <nav className="fixed top-0 z-50 flex justify-between w-full px-12 bg-indigo-600 sm:px-40">
       <NavLink to="/posts">
         <Logo className="w-20 h-20" />
       </NavLink>

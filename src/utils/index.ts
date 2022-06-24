@@ -6,3 +6,4 @@ export * from './file/index';
 export * from './storage/index';
 export * from './string/replaceLineBreaks';
 export * from './string/replaceURLs';
+export * from './string/getPostCategory';

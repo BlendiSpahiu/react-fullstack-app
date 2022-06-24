@@ -4,6 +4,7 @@ fragment PostFields on posts {
   description
   content
   status
+  category
   createdAt: created_at
   updatedAt: updated_at
   imageUrl: image_url

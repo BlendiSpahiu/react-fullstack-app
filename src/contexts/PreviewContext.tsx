@@ -3,7 +3,7 @@ import { createContext, ReactElement, ReactNode, useState } from 'react';
 
 export const PreviewPostContext = createContext<PreviewContextProps>({
   previewedPost: null,
-  setPreviedPost: () => null,
+  setPreviewedPost: (_post: Nullable<PostTypes>) => null,
 });
 
 export const PreviewPostProvider = ({
@@ -11,13 +11,13 @@ export const PreviewPostProvider = ({
 }: {
   children: ReactNode;
 }): ReactElement => {
-  const [previewedPost, setPreviedPost] = useState<Nullable<PostTypes>>(null);
+  const [previewedPost, setPreviewedPost] = useState<Nullable<PostTypes>>(null);
 
   return (
     <PreviewPostContext.Provider
       value={{
         previewedPost,
-        setPreviedPost,
+        setPreviewedPost,
       }}
     >
       {children}

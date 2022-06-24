@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './graphql/client';
 import { AuthProvider } from './contexts/AuthContext';
+import { PreviewPostProvider } from '@contexts';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,7 +16,9 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <AuthProvider>
-        <App />
+        <PreviewPostProvider>
+          <App />
+        </PreviewPostProvider>
       </AuthProvider>
     </ApolloProvider>
   </React.StrictMode>

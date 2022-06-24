@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { PostInputs } from '@interfaces';
@@ -26,13 +26,15 @@ export const AddPostForm = (): ReactElement => {
   const [notificationTitle, setNotificationTitle] = useState<string>('');
   const [postImageUrl, setPostImageUrl] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>('');
+  const [filteredCategory, setFilteredCategory] = useState<string>('');
 
   // hooks
   const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { previewedPost, setPreviedPost } = usePreview();
+  const { previewedPost, setPreviewedPost } = usePreview();
 
   // hook form
   const {
@@ -41,15 +43,15 @@ export const AddPostForm = (): ReactElement => {
     formState: { errors, isDirty },
     reset,
     trigger,
-    getValues,
     clearErrors,
+    watch,
   } = useForm<PostInputs>({
     resolver: joiResolver(AddPostFormSchema()),
     mode: 'onChange',
   });
 
   // upload
-  const upload = new Upload({ apiKey: 'public_FW25aqth2dBeCyy9JW8C1kdTnpZb' });
+  const upload = new Upload({ apiKey: 'free' });
   const uploadFile = upload.createFileInputHandler({
     onProgress: () => setLoading(true),
     onUploaded: ({ fileUrl }) => {
@@ -104,6 +106,10 @@ export const AddPostForm = (): ReactElement => {
   const isPublished = post?.status === PUBLISHED;
 
   // handlers
+  const handleAddCategory = (value: string) => setSelected(value);
+  const handleSearchCategory = ({
+    target: { value },
+  }: ChangeEvent<HTMLInputElement>) => setFilteredCategory(value);
   const hanldeSetModal = () => {
     setOpen(!open);
     !isPublished
@@ -147,6 +153,7 @@ export const AddPostForm = (): ReactElement => {
               user_id: user?.id,
               image_url: postImageUrl,
               status: PostStatusEnums.PUBLISHED,
+              category: selected,
             },
           },
         })
@@ -158,33 +165,38 @@ export const AddPostForm = (): ReactElement => {
               content,
               description,
               image_url: postImageUrl || post?.imageUrl,
+              category: selected,
             },
           },
         });
   };
 
-  const handlePreviewPost = (data: PostInputs) => {
-    setPreviedPost({ ...data, imageUrl: postImageUrl || '', user });
-    // navigate('/post/preview');
+  const handlePreviewPost = (data: PostInputs) => () => {
+    trigger('title');
+    setPreviewedPost({ ...data, imageUrl: postImageUrl, user });
+    navigate('/post/preview');
   };
 
   const handleCancel = () => {
-    setPreviedPost(null);
+    setPreviewedPost(null);
     navigate('/posts');
   };
 
   useEffect(() => {
-    isEditing &&
+    (isEditing || previewedPost) &&
       reset({
-        title: post?.title || '',
-        content: post?.content || '',
-        description: post?.description || '',
+        title: post?.title || previewedPost?.title,
+        content: post?.content || previewedPost?.content || '',
+        description: post?.description || previewedPost?.description || ' ',
       });
-  }, [id, isEditing, post, reset]);
+  }, [id, isEditing, post, previewedPost, reset]);
+
+  useEffect(() => {
+    if (post?.imageUrl) setPostImageUrl(post.imageUrl);
+    if (post?.category) setSelected(post.category);
+  }, [post?.category, post?.imageUrl, setPostImageUrl]);
 
   if (loadingData) return <Loader />;
-
-  console.log(previewedPost);
 
   return (
     <>
@@ -196,11 +208,16 @@ export const AddPostForm = (): ReactElement => {
                 Add Post
               </h3>
               <p className="mt-1 text-sm text-gray-500">
-                Add information about the post.
+                Add information about the post. Fields marked with * are
+                required.
               </p>
             </div>
 
             <AddPostFormFields
+              selected={selected}
+              filteredCategory={filteredCategory}
+              handleAddCategory={handleAddCategory}
+              handleSearchCategory={handleSearchCategory}
               isEditing={isEditing}
               register={register}
               errors={errors}
@@ -210,17 +227,18 @@ export const AddPostForm = (): ReactElement => {
           </div>
           <div className="flex items-center justify-between px-4 py-3 space-x-4 bg-gray-50 sm:px-6">
             <Button
+              className="disabled:cursor-not-allowed"
               type="button"
-              onClick={handlePreviewPost}
+              onClick={handlePreviewPost({ ...watch() })}
               iconLeft={<EyeIcon className="w-5 h-5 text-gray-400" />}
               color="white"
             >
               Preview
             </Button>
-            <div className="space-x-4">
+            <div className="flex items-center space-x-4">
               <If condition={isEditing}>
                 <Ternary
-                  condition={isEditing && isPublished}
+                  condition={isEditing && !isPublished}
                   fallback={
                     <Button
                       loading={publishLoading}
@@ -250,37 +268,45 @@ export const AddPostForm = (): ReactElement => {
               </Button>
               <ButtonGroup color="primary">
                 <Button
-                  disabled={!isDirty}
+                  disabled={
+                    (insertLoading || loading || updateLoading || !isDirty) &&
+                    !postImageUrl
+                  }
                   loading={insertLoading || loading || updateLoading}
                   type="submit"
                   color="primary"
-                  className="bg-indigo-600"
+                  className="bg-indigo-600 disabled:cursor-not-allowed"
                 >
                   {isEditing ? 'Save changes' : 'Add Post'}
                 </Button>
                 <Dropdown>
                   <Dropdown.Trigger
-                    disabled={!isDirty}
-                    className="text-white bg-indigo-600 hover:bg-indigo-600 disabled:opacity-50"
+                    disabled={
+                      (!isDirty || insertLoading || updateLoading) &&
+                      !postImageUrl
+                    }
+                    className="text-white bg-indigo-600 hover:bg-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
                   />
                   <Dropdown.Menu className="absolute bottom-[44px]">
                     <Dropdown.Group>
                       <Dropdown.Item
+                        className="disabled:cursor-not-allowed"
                         id="add-post"
                         as="button"
                         role="button"
                         type="submit"
-                        disabled={loading && insertLoading && updateLoading}
+                        disabled={loading || insertLoading || updateLoading}
                       >
                         {isEditing ? 'Update' : 'Save and Publish'}
                       </Dropdown.Item>
                       <Dropdown.Item
+                        className="disabled:cursor-not-allowed"
                         id="draft"
                         as="button"
                         role="button"
                         type="button"
-                        disabled={loading && insertLoading && updateLoading}
-                        onClick={handleDraftPost({ ...getValues() })}
+                        disabled={loading || insertLoading || updateLoading}
+                        onClick={handleDraftPost({ ...watch() })}
                       >
                         Save as Draft
                       </Dropdown.Item>

@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useGetPostByPkSubscription } from '@graphql/gen/graphql';
 import { replaceURLs } from '@utils';
 import { Loader } from '@atoms';
@@ -9,6 +9,7 @@ import { usePreview } from '@hooks';
 
 export const Post = (): ReactElement => {
   // hooks
+  const { pathname } = useLocation();
   const { id } = useParams();
   const { previewedPost } = usePreview();
 
@@ -19,18 +20,25 @@ export const Post = (): ReactElement => {
     },
   });
 
+  // constantss \
+  const { DRAFT } = PostStatusEnums;
+
   if (loading) return <Loader />;
 
   return (
     <div className="relative py-16 mt-24 overflow-hidden bg-white">
       <div className="relative px-4 sm:px-6 lg:px-8">
-        <If condition={post?.status === PostStatusEnums.DRAFT}>
+        <If condition={post?.status === DRAFT || pathname.includes('preview')}>
           <Alert variant="warning" className="mb-6">
-            <Alert.Body>You're viewing a draft post.</Alert.Body>
+            <Alert.Body>
+              {!pathname.includes('preview')
+                ? "You're viewing a draft post."
+                : "You're previewing a post. If you refresh the page the data will be lost."}
+            </Alert.Body>
           </Alert>
         </If>
         <div className="mx-auto text-lg max-w-prose">
-          <If condition={!!post?.imageUrl}>
+          <If condition={!!post?.imageUrl || !!previewedPost?.imageUrl}>
             <img
               src={post?.imageUrl || '' || previewedPost?.imageUrl || ''}
               alt="Post"

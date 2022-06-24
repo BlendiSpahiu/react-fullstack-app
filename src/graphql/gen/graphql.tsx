@@ -258,6 +258,7 @@ export enum Order_By {
 /** columns and relationships of "posts" */
 export type Posts = {
   __typename?: 'posts';
+  category?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   description?: Maybe<Scalars['String']>;
@@ -343,6 +344,7 @@ export type Posts_Bool_Exp = {
   _and?: InputMaybe<Array<Posts_Bool_Exp>>;
   _not?: InputMaybe<Posts_Bool_Exp>;
   _or?: InputMaybe<Array<Posts_Bool_Exp>>;
+  category?: InputMaybe<String_Comparison_Exp>;
   content?: InputMaybe<String_Comparison_Exp>;
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   description?: InputMaybe<String_Comparison_Exp>;
@@ -370,6 +372,7 @@ export type Posts_Inc_Input = {
 
 /** input type for inserting data into table "posts" */
 export type Posts_Insert_Input = {
+  category?: InputMaybe<Scalars['String']>;
   content?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
@@ -385,6 +388,7 @@ export type Posts_Insert_Input = {
 /** aggregate max on columns */
 export type Posts_Max_Fields = {
   __typename?: 'posts_max_fields';
+  category?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
@@ -398,6 +402,7 @@ export type Posts_Max_Fields = {
 
 /** order by max() on columns of table "posts" */
 export type Posts_Max_Order_By = {
+  category?: InputMaybe<Order_By>;
   content?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
@@ -412,6 +417,7 @@ export type Posts_Max_Order_By = {
 /** aggregate min on columns */
 export type Posts_Min_Fields = {
   __typename?: 'posts_min_fields';
+  category?: Maybe<Scalars['String']>;
   content?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   description?: Maybe<Scalars['String']>;
@@ -425,6 +431,7 @@ export type Posts_Min_Fields = {
 
 /** order by min() on columns of table "posts" */
 export type Posts_Min_Order_By = {
+  category?: InputMaybe<Order_By>;
   content?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
@@ -454,6 +461,7 @@ export type Posts_On_Conflict = {
 
 /** Ordering options when selecting data from "posts". */
 export type Posts_Order_By = {
+  category?: InputMaybe<Order_By>;
   content?: InputMaybe<Order_By>;
   created_at?: InputMaybe<Order_By>;
   description?: InputMaybe<Order_By>;
@@ -473,6 +481,8 @@ export type Posts_Pk_Columns_Input = {
 
 /** select columns of table "posts" */
 export enum Posts_Select_Column {
+  /** column name */
+  Category = 'category',
   /** column name */
   Content = 'content',
   /** column name */
@@ -495,6 +505,7 @@ export enum Posts_Select_Column {
 
 /** input type for updating data in table "posts" */
 export type Posts_Set_Input = {
+  category?: InputMaybe<Scalars['String']>;
   content?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['timestamptz']>;
   description?: InputMaybe<Scalars['String']>;
@@ -568,6 +579,8 @@ export type Posts_Sum_Order_By = {
 
 /** update columns of table "posts" */
 export enum Posts_Update_Column {
+  /** column name */
+  Category = 'category',
   /** column name */
   Content = 'content',
   /** column name */
@@ -1090,7 +1103,7 @@ export type Users_Variance_Fields = {
 
 export type AuthUserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null };
 
-export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
+export type PostFieldsFragment = { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, category?: string | null, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null };
 
 export type UserFieldsFragment = { __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null };
 
@@ -1114,7 +1127,7 @@ export type InsertPostMutationVariables = Exact<{
 }>;
 
 
-export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type InsertPostMutation = { __typename?: 'mutation_root', insertPost?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, category?: string | null, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type UpdatePostMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -1161,17 +1174,20 @@ export type GetAuthUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAuthUserQuery = { __typename?: 'query_root', authUser: Array<{ __typename?: 'users', id: number, name: string, email: string, role: string, createdAt?: any | null, profilePicture?: string | null }> };
 
-export type GetPostsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+export type GetPostsSubscriptionVariables = Exact<{
+  where?: InputMaybe<Posts_Bool_Exp>;
+  orderBy?: InputMaybe<Array<Posts_Order_By> | Posts_Order_By>;
+}>;
 
 
-export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
+export type GetPostsSubscription = { __typename?: 'subscription_root', posts: Array<{ __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, category?: string | null, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null }> };
 
 export type GetPostByPkSubscriptionVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
+export type GetPostByPkSubscription = { __typename?: 'subscription_root', post?: { __typename?: 'posts', id: number, title: string, description?: string | null, content?: string | null, status: number, category?: string | null, createdAt: any, updatedAt: any, imageUrl?: string | null, userId?: number | null, user?: { __typename?: 'users', name: string, email: string } | null } | null };
 
 export type PostsCountSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -1202,6 +1218,7 @@ export const PostFieldsFragmentDoc = gql`
   description
   content
   status
+  category
   createdAt: created_at
   updatedAt: updated_at
   imageUrl: image_url
@@ -1538,8 +1555,8 @@ export type GetAuthUserQueryHookResult = ReturnType<typeof useGetAuthUserQuery>;
 export type GetAuthUserLazyQueryHookResult = ReturnType<typeof useGetAuthUserLazyQuery>;
 export type GetAuthUserQueryResult = Apollo.QueryResult<GetAuthUserQuery, GetAuthUserQueryVariables>;
 export const GetPostsDocument = gql`
-    subscription getPosts {
-  posts {
+    subscription getPosts($where: posts_bool_exp, $orderBy: [posts_order_by!]) {
+  posts(where: $where, order_by: $orderBy) {
     ...PostFields
   }
 }
@@ -1557,6 +1574,8 @@ export const GetPostsDocument = gql`
  * @example
  * const { data, loading, error } = useGetPostsSubscription({
  *   variables: {
+ *      where: // value for 'where'
+ *      orderBy: // value for 'orderBy'
  *   },
  * });
  */

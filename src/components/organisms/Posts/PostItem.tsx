@@ -6,18 +6,24 @@ import {
 } from '@heroicons/react/solid';
 import Tooltip from '@mui/material/Tooltip';
 import { If, Button, Badge } from '@ornio-no/ds';
-import { formatDate, formatDateExtended } from '@utils';
+import { formatDate } from '@utils';
 import { PostStatusEnums } from '@enums';
 import { ReactElement } from 'react';
 import { NavLink } from 'react-router-dom';
 import { PostItemProps } from './Post.props';
+import { HighlightText } from '@atoms';
+import { useUrlSearchParams } from '@hooks';
 
 export const PostItem = ({
   post,
   handleEditPost,
   handleSetModal,
 }: PostItemProps): ReactElement => {
+  // hooks
+  const search = useUrlSearchParams();
+
   // constants
+  const searchParam = search.get('search');
   const { PUBLISHED } = PostStatusEnums;
   const isDraft = post?.status === PostStatusEnums.DRAFT;
 
@@ -31,7 +37,7 @@ export const PostItem = ({
           to={`/post/${post?.id}`}
           className="text-lg flex items-center font-semibold !leading-snug tracking-tight text-gray-900"
         >
-          {post?.title} -{' '}
+          {HighlightText(post?.title || '', searchParam)} {isDraft && '- '}
           {isDraft && (
             <Badge className="ml-1" variant="warning">
               Draft
@@ -39,7 +45,11 @@ export const PostItem = ({
           )}
         </NavLink>
         <If condition={!!post?.imageUrl}>
-          <img className="mt-2" src={post?.imageUrl || ''} alt="Post" />
+          <img
+            className="object-cover w-full h-48 mt-2"
+            src={post?.imageUrl || ''}
+            alt="Post"
+          />
         </If>
         <dl className="flex flex-col justify-between flex-grow mt-1">
           <div className="flex text-gray-500">
@@ -54,12 +64,12 @@ export const PostItem = ({
               to={`/post/${post?.id}`}
               className="text-xs font-medium text-green-800 line-clamp-4 text-ellipsis"
             >
-              {post?.content}
+              {HighlightText(post?.content || '', searchParam)}
             </NavLink>
           </dd>
         </dl>
         <div className="flex items-center justify-between mt-4">
-          <div className="space-x-4">
+          <div className="flex items-center space-x-4">
             <Tooltip title="Delete" arrow>
               <Button
                 color="none"
@@ -104,10 +114,17 @@ export const PostItem = ({
             </Tooltip>
           </div>
 
-          <div className="text-sm text-gray-500">
-            <p>Modified</p>
-            <p className="font-medium">{formatDateExtended(post?.updatedAt)}</p>
-          </div>
+          <If condition={!!post?.category}>
+            <div className="text-sm text-gray-500">
+              <span className="p-2 text-white bg-gray-600 rounded-md">
+                {HighlightText(
+                  (post?.category?.charAt(0)?.toUpperCase() || '') +
+                    post?.category?.slice(1),
+                  searchParam
+                )}
+              </span>
+            </div>
+          </If>
         </div>
       </div>
     </li>

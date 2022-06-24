@@ -8,5 +8,5 @@ export type PostTypes = Pick<
 
 export interface PreviewContextProps {
   previewedPost: Nullable<PostTypes>;
-  setPreviedPost: (post: Nullable<PostTypes>) => void;
+  setPreviewedPost: (post: Nullable<PostTypes>) => void;
 }
